@@ -1,7 +1,9 @@
 #include <SFML/Window/Keyboard.hpp>
 #include "headers/Game.h"
 
+///////////////////////////////////////////
 // Private Methods
+///////////////////////////////////////////
 void Game::initVariables()
 {
   this->window = nullptr;
@@ -12,13 +14,28 @@ void Game::initWindow()
   this->videoMode.height = 600;
   this->videoMode.width = 800;
   this->window = new sf::RenderWindow(this->videoMode, "Game 1", sf::Style::Titlebar | sf::Style::Close);
+  
+  // Set frame rate
+  this->window->setFramerateLimit(60);
 }
 
+void Game::initEnemies()
+{
+  this->enemy.setPosition(10.f, 10.f);
+  this->enemy.setSize(sf::Vector2f(100.f, 100.f));
+  this->enemy.setFillColor(sf::Color::Cyan);
+  this->enemy.setOutlineColor(sf::Color::Green);
+  this->enemy.setOutlineThickness(1.f);
+}
+
+///////////////////////////////////////////
 // Constructors /Destructors
+///////////////////////////////////////////
 Game::Game()
 {
   this->initVariables();
   this->initWindow();
+  this->initEnemies();
 }
 
 Game::~Game()
@@ -26,14 +43,18 @@ Game::~Game()
   delete this->window;
 }
 
+///////////////////////////////////////////
 // Accessors
+///////////////////////////////////////////
 const bool Game::running() const
 {
   // Access window object and check if the window is open
   return this->window->isOpen();
 }
 
+///////////////////////////////////////////
 // Methods
+///////////////////////////////////////////
 void Game::pollEvents()
 {
   // Event polling
@@ -63,16 +84,16 @@ void Game::update()
 void Game::render()
 {
   /*
-   *  @return void
-   * 
+   *  Renders the game objects.
    *  - clear old frame
    *  - render objects
    *  - display frame in window
    *
-   *  Renders the game objects.
+   *  @return void
    */
-  this->window->clear(sf::Color(255, 0, 0, 255));
+  this->window->clear();
 
   // Draw game objects
+  this->window->draw(this->enemy);
   this->window->display();
 }
